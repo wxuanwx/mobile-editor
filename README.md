@@ -1,39 +1,46 @@
-# rich-text-editor
+# vue3-video-h
 
-This template should help get you started developing with Vue 3 in Vite.
+> A HTML5 video player component for Vue3
 
-## Recommended IDE Setup
+## Installation
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
+```bash
+npm i vue3-video-h --save
 ```
 
-### Compile and Hot-Reload for Development
+## Usage
 
-```sh
-pnpm dev
+main.ts
+
+```
+// script
+import { createApp } from 'vue';
+import App from './App.vue';
+import customVideo from "vue3-video-h"
+import "vue3-video-h/lib/style.css";//引入样式
+const app = createApp(App);
+app.use(customVideo); //全局注册
+app.mount('#app');
 ```
 
-### Type-Check, Compile and Minify for Production
+App.vue
 
-```sh
-pnpm build
 ```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
+<template>
+  <div class="app-container">
+    <customVideo :config="config" />
+  </div>
+</template>
+<script setup lang="ts">
+import {ref} from "vue";
+let config = ref({
+  src:"", //视频
+  poster: "", // 初始化占位图片
+  volume: 20,//声音
+  themeColor:"#19accc",//主体颜色
+  activeColor:"red",//选中颜色
+  width:"500px",//宽度
+  height:"300px",//高度
+})
+</script>
 ```
