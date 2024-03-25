@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'iconfont';
+  src: url('../font/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-left:before {
+  content: '\e612';
+}
+
+.icon-right:before {
+  content: '\e613';
+}
+
+.icon-justify:before {
+  content: '\e614';
+}
+
+.icon-font:before {
+  content: '\e615';
+}
+
+.icon-text:before {
+  content: '\e616';
+}
+
+.icon-color:before {
+  content: '\e617';
+}
+
+.icon-delete:before {
+  content: '\e618';
+}
+
+.icon-title:before {
+  content: '\e619';
+}
+
+.icon-center:before {
+  content: '\e61a';
+}

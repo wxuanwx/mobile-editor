@@ -1,6 +1,6 @@
 {
   "name": "rich-text-editor",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "vue3移动端富文本编辑器",
@@ -21,6 +21,22 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tiptap/extension-character-count": "^2.2.4",
+    "@tiptap/extension-code-block-lowlight": "^2.2.4",
+    "@tiptap/extension-color": "^2.2.4",
+    "@tiptap/extension-font-family": "^2.2.4",
+    "@tiptap/extension-highlight": "^2.2.4",
+    "@tiptap/extension-list-item": "^2.2.4",
+    "@tiptap/extension-placeholder": "^2.2.4",
+    "@tiptap/extension-task-item": "^2.2.4",
+    "@tiptap/extension-task-list": "^2.2.4",
+    "@tiptap/extension-text-align": "^2.2.4",
+    "@tiptap/extension-text-style": "^2.2.4",
+    "@tiptap/pm": "^2.2.4",
+    "@tiptap/starter-kit": "^2.2.4",
+    "@tiptap/vue-3": "^2.2.4",
+    "highlight.js": "^11.9.0",
+    "lowlight": "2.7.0",
     "vite-plugin-dts": "1.4.1",
     "vue": "^3.4.21"
   },
