@@ -48,6 +48,9 @@
       <button type="button" title="清除" @click="() => editor?.commands.clearContent(true)">
         <div class="iconfont icon-empty"></div>
       </button>
+      <button type="button" title="输出" @click="getContent">
+        输出
+      </button>
     </div>
     <editor-content :editor="editor" class="editor__content" />
   </div>
@@ -68,7 +71,9 @@ import Highlight from '@tiptap/extension-highlight';
 import CharacterCount from '@tiptap/extension-character-count';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
+import HTML from 'html-parse-stringify';
 import { nextTick, ref } from 'vue';
+import styleNames from './styleNames.json';
 
 const color = ref('#000');
 const setColor = (val: any) => {
@@ -111,8 +116,68 @@ const editor = useEditor({
 })
 
 const focus = () => editor.value?.chain().focus()
-
-nextTick(focus)
+const defaultStyles = ['none', 'normal', 'auto', '0', '0%', '0px', 'rgba(0, 0, 0, 0)', 'rgb(0, 0, 0)', 'visible']
+const handleStyle = (div?: HTMLElement) => {
+  if (!div) {
+    return {}
+  }
+  const style = window.getComputedStyle(div, null)
+  const newStyle: Record<string, string> = {}
+  for (let i = 0; i < styleNames.length; i++) {
+    const name: any = styleNames[i];
+    const value = style[name]
+    if (value && !defaultStyles.includes(value)) {
+      if (value.includes('none')) {
+        continue
+      }
+      newStyle[name] = value;
+    }
+  }
+  return newStyle
+}
+const handleHtml = (ast?: Tag[], parentSelector: string = '') => {
+  if (!ast?.length) {
+    return
+  }
+  for (let i = 0; i < ast.length; i++) {
+    const element = ast[i];
+    const className = element.attrs?.class
+    const type = element.type
+    let selector = ''
+    if (className) {
+      selector += `${parentSelector} > .${className}`
+    } else if (type === 'text') {
+      selector = parentSelector
+    } else {
+      selector += `${parentSelector} > ${type}`
+    }
+    const div = document.querySelector(selector) as HTMLElement
+    if (div) {
+      const styleObj = handleStyle(div)
+      let styleStr = ''
+      for (const key in styleObj) {
+        if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
+          const value = styleObj[key];
+          styleStr += `${key}: ${value};`
+        }
+      }
+      element.attrs = { style: styleStr }
+    }
+    handleHtml(element.children, selector)
+  }
+}
+const getContent = () => {
+  const str = editor.value?.getHTML() || ''
+  if (str) {
+    const ast = HTML.parse(str)
+    handleHtml(ast, '.editor > .editor__content > .tiptap.ProseMirror')
+    const htmlString = HTML.stringify(ast);
+    console.log(htmlString)
+  }
+}
+nextTick(() => {
+  focus()
+})
 
 
 </script>
