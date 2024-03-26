@@ -1,52 +1,49 @@
 <template>
   <div class="editor" @click="focus">
     <div class="editor__menu">
-      <button type="button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
-        @click="editor?.chain().focus().toggleBold().run()">
-        <div class="iconfont icon-bold"></div>
+      <button type="button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗" @click="toggleBold"
+        :disabled="!editor?.can().chain().focus().toggleBold().run()">
+        <div class="iconfont icon-left">粗</div>
       </button>
       <button type="button" :class="editor?.isActive('italic') ? 'is-active' : ''" title="斜体"
-        @click="editor?.chain().focus().toggleItalic().run()">
-        <div class="iconfont icon-italic"></div>
+        @click="editor?.chain().focus().toggleItalic().run()"
+        :disabled="!editor?.can().chain().focus().toggleItalic().run()">
+        斜
       </button>
-      <button type="button" :class="editor?.isActive('heading') ? 'is-active' : ''" title="标题"
-        @click="() => editor?.chain().focus().setHeading({ level: 1 }).run()">
-        <div class="iconfont icon-title"></div>
-      </button>
-      <button type="button" :class="editor?.isActive({ textAlign: 'left' }) ? 'is-active' : ''" title="左对齐"
-        @click="() => editor?.chain().focus().setTextAlign('left').run()">
-        <div class="iconfont icon-alignLeft"></div>
-      </button>
-      <button type="button" :class="editor?.isActive({ textAlign: 'center' }) ? 'is-active' : ''" title="居中对齐"
-        @click="() => editor?.chain().focus().setTextAlign('center').run()">
-        <div class="iconfont icon-center"></div>
-      </button>
-      <button type="button" :class="editor?.isActive({ textAlign: 'right' }) ? 'is-active' : ''" title="右对齐"
-        @click="() => editor?.chain().focus().setTextAlign('right').run()">
-        <div class="iconfont icon-alignRight"></div>
-      </button>
-
-      <button type="button" title="中横线" @click="() => editor?.chain().focus().toggleStrike().run()">
-        <div class="iconfont icon-strikethrough"></div>
+      <div class="divider"></div>
+      <button type="button" :class="editor?.isActive('strike') ? 'is-active' : ''" title="中横线"
+        @click="() => editor?.chain().focus().toggleStrike().run()"
+        :disabled="!editor?.can().chain().focus().toggleStrike().run()">
+        中
       </button>
       <button type="button" title="分割线" @click="() => editor?.chain().focus().setHorizontalRule().run()">
-        <div class="iconfont icon-hr"></div>
+        分
       </button>
       <button type="button" :class="editor?.isActive('bulletList') ? 'is-active' : ''" title="无序列表"
         @click="() => editor?.chain().focus().toggleBulletList().run()">
-        <div class="iconfont icon-unorderedList"></div>
+        无
       </button>
       <button type="button" :class="editor?.isActive('orderedList') ? 'is-active' : ''" title="有序列表"
         @click="() => editor?.chain().focus().toggleOrderedList().run()">
-        <div class="iconfont icon-orderedList"></div>
+        有
+      </button>
+      <button type="button" @click="() => editor?.chain().focus().toggleTaskList().run()"
+        :class="editor?.isActive('taskList') ? 'is-active' : ''" title="任务列表">
+        任
       </button>
       <div class="divider"></div>
+      <button type="button" :class="editor?.isActive('code') ? 'is-active' : ''" title="代码"
+        @click="() => editor?.chain().focus().toggleCode().run()"
+        :disabled="!editor?.can().chain().focus().toggleCode().run()">
+        代
+      </button>
+      <button type="button" :class="editor?.isActive('codeBlock') ? 'is-active' : ''" title="代码块"
+        :onClick="() => editor?.chain().focus().toggleCodeBlock().run()">
+        块
+      </button>
       <button type="button" title="撤回" @click="() => editor?.chain().focus().undo().run()"
         :disabled="!editor?.can().chain().focus().undo().run()">
-        <div class="iconfont icon-undo"></div>
-      </button>
-      <button type="button" title="清除" @click="() => editor?.commands.clearContent(true)">
-        <div class="iconfont icon-empty"></div>
+        撤
       </button>
     </div>
     <editor-content :editor="editor" class="editor__content" />
@@ -66,17 +63,33 @@ import ListItem from '@tiptap/extension-list-item';
 import TextStyle from '@tiptap/extension-text-style';
 import Highlight from '@tiptap/extension-highlight';
 import CharacterCount from '@tiptap/extension-character-count';
+import FontFamily from '@tiptap/extension-font-family';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import ts from 'highlight.js/lib/languages/typescript';
+import html from 'highlight.js/lib/languages/xml';
+import { lowlight } from 'lowlight';
 import { nextTick, ref } from 'vue';
+// 代码
+lowlight.registerLanguage('html', html);
+lowlight.registerLanguage('css', css);
+lowlight.registerLanguage('js', js);
+lowlight.registerLanguage('ts', ts);
 
 const color = ref('#000');
 const setColor = (val: any) => {
   console.log(val)
 }
-const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+
 const limit = 800;
 const extensions = [
+  FontFamily,
+  TaskList,
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle.configure({ types: [ListItem.name] } as any),
 
@@ -92,6 +105,9 @@ const extensions = [
   Placeholder.configure({
     placeholder: '请输入内容...',
   }),
+  TaskItem.configure({
+    nested: true,
+  }),
   StarterKit.configure({
     codeBlock: false,
     paragraph: {
@@ -100,7 +116,10 @@ const extensions = [
       },
     },
   }),
-  CharacterCount.configure({ limit })
+  CharacterCount.configure({ limit }),
+  CodeBlockLowlight.configure({
+    lowlight,
+  }),
 ];
 
 const content = ``;
@@ -114,6 +133,11 @@ const focus = () => editor.value?.chain().focus()
 
 nextTick(focus)
 
+const toggleBold = () => {
+  editor.value?.commands.toggleBold()
+  console.log('加粗')
+}
+
 
 </script>
 <style lang="scss">
@@ -121,7 +145,6 @@ nextTick(focus)
 </style>
 <style lang="scss" scoped>
 @import "../assets/css/iconfont.css";
-
 :root {
   --editor-primary: #409eff;
   --editor-success: #67c23a;
@@ -140,47 +163,6 @@ $error: var(--editor-error);
 $info: var(--editor-info);
 $text: var(--editor-text);
 
-@media (max-width: 480px) {
-  .editor {
-    &__menu {
-      justify-content: space-between;
-      ;
-    }
-  }
-}
-
-@media (min-width: 480px) {
-  .editor {
-    button {
-      font-size: 16px;
-    }
-  }
-}
-
-@media (min-width: 640px) {
-  .editor {
-    button {
-      font-size: 18px;
-    }
-
-    .divider {
-      height: 16px !important;
-    }
-  }
-}
-
-@media (min-width: 768px) {
-  .editor {
-    button {
-      font-size: 20px;
-    }
-
-    .divider {
-      height: 18px !important;
-    }
-  }
-}
-
 .editor {
   border-radius: 4px;
   color: #0d0d0d;
@@ -197,7 +179,6 @@ $text: var(--editor-text);
     display: flex;
     flex-wrap: wrap;
     padding: 4px;
-
   }
 
   &__content {

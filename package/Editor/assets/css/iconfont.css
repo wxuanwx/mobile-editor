@@ -10,38 +10,90 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-left:before {
-  content: '\e612';
+.icon-hr:before {
+  content: '\e60a';
 }
 
-.icon-right:before {
-  content: '\e613';
+.icon-h3:before {
+  content: '\e60b';
 }
 
-.icon-justify:before {
-  content: '\e614';
+.icon-quote:before {
+  content: '\e60c';
 }
 
-.icon-font:before {
-  content: '\e615';
+.icon-h5:before {
+  content: '\e60d';
 }
 
-.icon-text:before {
-  content: '\e616';
+.icon-h2:before {
+  content: '\e61a';
 }
 
-.icon-color:before {
-  content: '\e617';
-}
-
-.icon-delete:before {
-  content: '\e618';
+.icon-h6:before {
+  content: '\e61b';
 }
 
 .icon-title:before {
-  content: '\e619';
+  content: '\e61d';
+}
+
+.icon-h1:before {
+  content: '\e623';
+}
+
+.icon-h4:before {
+  content: '\e624';
+}
+
+.icon-code:before {
+  content: '\e625';
+}
+
+.icon-image:before {
+  content: '\e629';
+}
+
+.icon-empty:before {
+  content: '\e62a';
+}
+
+.icon-multipleChoiceList:before {
+  content: '\e62c';
+}
+
+.icon-undo:before {
+  content: '\e609';
+}
+
+.icon-bold:before {
+  content: '\e60e';
+}
+
+.icon-strikethrough:before {
+  content: '\e611';
+}
+
+.icon-orderedList:before {
+  content: '\e612';
+}
+
+.icon-italic:before {
+  content: '\e61c';
+}
+
+.icon-unorderedList:before {
+  content: '\e620';
+}
+
+.icon-alignLeft:before {
+  content: '\e621';
+}
+
+.icon-alignRight:before {
+  content: '\e622';
 }
 
 .icon-center:before {
-  content: '\e61a';
+  content: '\e62e';
 }
