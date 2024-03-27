@@ -69,9 +69,13 @@ import CharacterCount from '@tiptap/extension-character-count';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import HTML from 'html-parse-stringify';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, type StyleValue } from 'vue';
 import styleNames from '../assets/json/styleNames.json';
-import { type EditorProps } from './props.d'
+
+interface EditorProps {
+  style?: Partial<StyleValue>
+  placeholder?: string
+}
 
 const { style, placeholder } = withDefaults(defineProps<EditorProps>(), {
   placeholder: '请输入内容...'
