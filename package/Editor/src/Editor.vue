@@ -1,51 +1,57 @@
 <template>
   <div class="editor" @click="focus" :style="style">
     <div class="editor__menu">
-      <button type="button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
+      <button type="button" class="editor__menu__button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
         @click="editor?.chain().focus().toggleBold().run()">
         <div class="iconfont icon-bold"></div>
       </button>
-      <button type="button" :class="editor?.isActive('italic') ? 'is-active' : ''" title="斜体"
-        @click="editor?.chain().focus().toggleItalic().run()">
+      <button type="button" class="editor__menu__button" :class="editor?.isActive('italic') ? 'is-active' : ''"
+        title="斜体" @click="editor?.chain().focus().toggleItalic().run()">
         <div class="iconfont icon-italic"></div>
       </button>
-      <button type="button" :class="editor?.isActive('heading') ? 'is-active' : ''" title="标题"
-        @click="() => editor?.chain().focus().setHeading({ level: 1 }).run()">
+      <button type="button" class="editor__menu__button" :class="editor?.isActive('heading') ? 'is-active' : ''"
+        title="标题" @click="() => editor?.chain().focus().setHeading({ level: 1 }).run()">
         <div class="iconfont icon-title"></div>
       </button>
-      <button type="button" :class="editor?.isActive({ textAlign: 'left' }) ? 'is-active' : ''" title="左对齐"
+      <button type="button" class="editor__menu__button"
+        :class="editor?.isActive({ textAlign: 'left' }) ? 'is-active' : ''" title="左对齐"
         @click="() => editor?.chain().focus().setTextAlign('left').run()">
         <div class="iconfont icon-alignLeft"></div>
       </button>
-      <button type="button" :class="editor?.isActive({ textAlign: 'center' }) ? 'is-active' : ''" title="居中对齐"
+      <button type="button" class="editor__menu__button"
+        :class="editor?.isActive({ textAlign: 'center' }) ? 'is-active' : ''" title="居中对齐"
         @click="() => editor?.chain().focus().setTextAlign('center').run()">
         <div class="iconfont icon-center"></div>
       </button>
-      <button type="button" :class="editor?.isActive({ textAlign: 'right' }) ? 'is-active' : ''" title="右对齐"
+      <button type="button" class="editor__menu__button"
+        :class="editor?.isActive({ textAlign: 'right' }) ? 'is-active' : ''" title="右对齐"
         @click="() => editor?.chain().focus().setTextAlign('right').run()">
         <div class="iconfont icon-alignRight"></div>
       </button>
 
-      <button type="button" title="中横线" @click="() => editor?.chain().focus().toggleStrike().run()">
+      <button type="button" class="editor__menu__button" title="中横线"
+        @click="() => editor?.chain().focus().toggleStrike().run()">
         <div class="iconfont icon-strikethrough"></div>
       </button>
-      <button type="button" title="分割线" @click="() => editor?.chain().focus().setHorizontalRule().run()">
+      <button type="button" class="editor__menu__button" title="分割线"
+        @click="() => editor?.chain().focus().setHorizontalRule().run()">
         <div class="iconfont icon-hr"></div>
       </button>
-      <button type="button" :class="editor?.isActive('bulletList') ? 'is-active' : ''" title="无序列表"
-        @click="() => editor?.chain().focus().toggleBulletList().run()">
+      <button type="button" class="editor__menu__button" :class="editor?.isActive('bulletList') ? 'is-active' : ''"
+        title="无序列表" @click="() => editor?.chain().focus().toggleBulletList().run()">
         <div class="iconfont icon-unorderedList"></div>
       </button>
-      <button type="button" :class="editor?.isActive('orderedList') ? 'is-active' : ''" title="有序列表"
-        @click="() => editor?.chain().focus().toggleOrderedList().run()">
+      <button type="button" class="editor__menu__button" :class="editor?.isActive('orderedList') ? 'is-active' : ''"
+        title="有序列表" @click="() => editor?.chain().focus().toggleOrderedList().run()">
         <div class="iconfont icon-orderedList"></div>
       </button>
-      <div class="divider"></div>
-      <button type="button" title="撤回" @click="() => editor?.chain().focus().undo().run()"
+      <div class="editor__menu__divider"></div>
+      <button type="button" class="editor__menu__button" title="撤回" @click="() => editor?.chain().focus().undo().run()"
         :disabled="!editor?.can().chain().focus().undo().run()">
         <div class="iconfont icon-undo"></div>
       </button>
-      <button style="" type="button" title="清除" @click="() => editor?.commands.clearContent(true)">
+      <button style="" type="button" class="editor__menu__button" title="清除"
+        @click="() => editor?.commands.clearContent(true)">
         <div class="iconfont icon-empty"></div>
       </button>
     </div>
@@ -238,19 +244,24 @@ $text: var(--editor-text);
 
 @media (min-width: 480px) {
   .editor {
-    button {
-      font-size: 16px;
+    &__menu {
+      &__button {
+        font-size: 16px;
+      }
     }
+
   }
 }
 
 @media (min-width: 640px) {
   .editor {
-    button {
-      font-size: 18px;
+    &__menu {
+      &__button {
+        font-size: 18px;
+      }
     }
 
-    .divider {
+    &__divider {
       height: 16px !important;
     }
   }
@@ -258,17 +269,20 @@ $text: var(--editor-text);
 
 @media (min-width: 768px) {
   .editor {
-    button {
-      font-size: 20px;
+    &__menu {
+      &__button {
+        font-size: 20px;
+      }
     }
 
-    .divider {
+    &__divider {
       height: 18px !important;
     }
   }
 }
 
 .editor {
+  box-sizing: border-box;
   border-radius: 4px;
   color: #0d0d0d;
   display: flex;
@@ -285,31 +299,33 @@ $text: var(--editor-text);
     flex-wrap: wrap;
     padding: 4px;
 
+    &__button {
+      outline: inherit;
+      accent-color: black;
+      border: none;
+      cursor: pointer;
+      margin: 0 4px;
+      padding: 4px;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+    &__button:hover,
+    &__button.is-active {
+      background-color: #e0e0e0;
+    }
+
   }
 
   &__content {
+    box-sizing: border-box;
     width: 100%;
     height: 200px;
     overflow-y: auto;
     padding: 12px;
   }
 
-  button {
-    accent-color: black;
-    border: none;
-    cursor: pointer;
-    margin: 0 4px;
-    padding: 4px;
-    border-radius: 2px;
-    background: #fff;
-  }
-
-  button:hover,
-  button.is-active {
-    background-color: #e0e0e0;
-  }
-
-  .divider {
+  &__divider {
     background-color: #ccc;
     height: 14px;
     width: 1px;

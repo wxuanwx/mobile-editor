@@ -2,7 +2,7 @@
 
 vue3移动端富文本编辑器
 
-[English](./README_en.md)
+[English](https://github.com/wxuanwx/mobile-editor/blob/master/README_en.md)
 
 ## 安装
 
@@ -19,7 +19,7 @@ vue3移动端富文本编辑器
 
     import Editor from 'mobile-editor';
     // 引入组件样式
-    import 'mobile-editor/lib/style.css'
+    import 'mobile-editor/lib/style.css';
 
     const app = createApp(App);
     app.use(Editor );
@@ -45,10 +45,10 @@ vue3移动端富文本编辑器
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-const editor = ref()
-const html = ref('')
+const editor = ref();
+const html = ref('');
 const getContent = () => {
-  html.value = editor.value.getHTML()
-}
+  html.value = editor.value.getHTML();
+};
 </script>
 ```
