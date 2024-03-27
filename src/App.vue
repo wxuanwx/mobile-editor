@@ -8,7 +8,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Editor from '../package/Editor/src/Editor.vue'
+// import { Editor } from 'mobile-editor'
+import { Editor } from '../package/index'
+
 const editor = ref()
 const html = ref('')
 const getContent = () => {
@@ -17,7 +19,6 @@ const getContent = () => {
 </script>
 
 <style scoped>
-
 .button {
   box-sizing: border-box;
   border: 1px solid #ccc;

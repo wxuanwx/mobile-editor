@@ -10,26 +10,32 @@ pnpm i mobile-editor
 yarn add mobile-editor
 ```
 
+## Installs a plugin
+
+```
+// 1. global
+// main.ts
+import { createApp } from 'vue';
+import Editor from 'mobile-editor';
+import App from './App.vue';
+const app = createApp(App);
+app.use(Editor );
+app.mount('#app');
+
+// 2. local
+// index.vue
+<script setup lang="ts">
+import { Editor } from 'mobile-editor';
+</script>
+```
+
 ## Usage
 
-main.ts
-
 ```
-// script
-import { createApp } from 'vue';
-import App from './App.vue';
-import customEditor from "mobile-editor"
-const app = createApp(App);
-app.use(customEditor); //全局注册
-app.mount('#app');
-```
-
-App.vue
-
-```
+// index.vue
 <template>
   <div class="app-container">
-    <customEditor ref="editor" :style="{ height: '100px' }" />
+    <Editor ref="editor" :style="{ height: '100px' }" />
   </div>
 </template>
 <script setup lang="ts">
