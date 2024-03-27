@@ -1,11 +1,13 @@
-# vue3-video-h
+# rich-text-editor-vue3
 
-> A HTML5 video player component for Vue3
+> Vue3's mobile rich text editor
 
 ## Installation
 
 ```bash
-npm i vue3-video-h --save
+npm i rich-text-editor-vue3
+pnpm i rich-text-editor-vue3
+yarn add rich-text-editor-vue3
 ```
 
 ## Usage
@@ -16,10 +18,9 @@ main.ts
 // script
 import { createApp } from 'vue';
 import App from './App.vue';
-import customVideo from "vue3-video-h"
-import "vue3-video-h/lib/style.css";//引入样式
+import customEditor from "rich-text-editor-vue3"
 const app = createApp(App);
-app.use(customVideo); //全局注册
+app.use(customEditor); //全局注册
 app.mount('#app');
 ```
 
@@ -28,19 +29,15 @@ App.vue
 ```
 <template>
   <div class="app-container">
-    <customVideo :config="config" />
+    <customEditor ref="editor" :style="{ height: '100px' }" />
   </div>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
-let config = ref({
-  src:"", //视频
-  poster: "", // 初始化占位图片
-  volume: 20,//声音
-  themeColor:"#19accc",//主体颜色
-  activeColor:"red",//选中颜色
-  width:"500px",//宽度
-  height:"300px",//高度
-})
+import { ref } from 'vue';
+const editor = ref()
+const html = ref('')
+const getContent = () => {
+  html.value = editor.value.getHTML()
+}
 </script>
 ```
