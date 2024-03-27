@@ -1,38 +1,43 @@
 # mobile-editor
 
-> Vue3's mobile rich text editor
+vue3移动端富文本编辑器
 
-## Installation
+[English](./README_en.md)
 
-```bash
-npm i mobile-editor
-pnpm i mobile-editor
-yarn add mobile-editor
+## 安装
+
+    npm i mobile-editor
+    pnpm i mobile-editor
+    yarn add mobile-editor
+
+## 注册组件
+
+    // 1. 全局
+    // main.ts
+    import { createApp } from 'vue';
+    import App from './App.vue';
+
+    import Editor from 'mobile-editor';
+    // 引入组件样式
+    import 'mobile-editor/lib/style.css'
+
+    const app = createApp(App);
+    app.use(Editor );
+    app.mount('#app');
+
+    // 2. 局部
+    // index.vue
+    <script setup lang="ts">
+    import { Editor } from 'mobile-editor';
+    // 引入组件样式
+    import "mobile-editor/lib/style.css";
+    </script>
+
+## 使用
+
 ```
-
-## Installs a plugin
-
-```
-// 1. global
-// main.ts
-import { createApp } from 'vue';
-import Editor from 'mobile-editor';
-import App from './App.vue';
-const app = createApp(App);
-app.use(Editor );
-app.mount('#app');
-
-// 2. local
 // index.vue
-<script setup lang="ts">
-import { Editor } from 'mobile-editor';
-</script>
-```
-
-## Usage
-
-```
-// index.vue
+// 使用组件的getHTML方法获取富文本内容
 <template>
   <div class="app-container">
     <Editor ref="editor" :style="{ height: '100px' }" />

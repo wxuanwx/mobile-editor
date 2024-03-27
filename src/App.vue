@@ -9,6 +9,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // import { Editor } from 'mobile-editor'
+// import 'mobile-editor/lib/style.css';
+
+// import { Editor } from 'mobile-editor'
 import { Editor } from '../package/index'
 
 const editor = ref()

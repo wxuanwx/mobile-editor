@@ -1,8 +1,8 @@
 {
   "name": "mobile-editor",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "type": "module",
-  "description": "vue3移动端富文本编辑器",
+  "description": "vue3移动端富文本编辑器  Vue3 Mobile Rich Text Editor",
   "main": "lib/index.umd.js",
   "module": "lib/index.es.js",
   "style": "lib/style.css",
@@ -66,7 +66,9 @@
     "vue3",
     "移动端",
     "富文本",
-    "富文本编辑器"
+    "富文本编辑器",
+    "mobile",
+    "editor"
   ],
   "author": "wxuan",
   "license": "MIT",
