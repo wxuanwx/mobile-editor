@@ -1,13 +1,13 @@
-# rich-text-editor-vue3
+# mobile-editor
 
 > Vue3's mobile rich text editor
 
 ## Installation
 
 ```bash
-npm i rich-text-editor-vue3
-pnpm i rich-text-editor-vue3
-yarn add rich-text-editor-vue3
+npm i mobile-editor
+pnpm i mobile-editor
+yarn add mobile-editor
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ main.ts
 // script
 import { createApp } from 'vue';
 import App from './App.vue';
-import customEditor from "rich-text-editor-vue3"
+import customEditor from "mobile-editor"
 const app = createApp(App);
 app.use(customEditor); //全局注册
 app.mount('#app');

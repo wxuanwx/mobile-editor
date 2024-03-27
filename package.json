@@ -1,7 +1,6 @@
 {
-  "name": "rich-text-editor",
+  "name": "mobile-editor",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "description": "vue3移动端富文本编辑器",
   "main": "lib/index.umd.js",
@@ -71,6 +70,6 @@
   ],
   "author": "wxuan",
   "license": "MIT",
-  "homepage": "https://github.com/wxuanwx/rich-text-editor",
-  "repository": "https://github.com/wxuanwx/rich-text-editor"
+  "homepage": "https://github.com/wxuanwx/mobile-editor",
+  "repository": "https://github.com/wxuanwx/mobile-editor"
 }
