@@ -147,6 +147,10 @@ const handleHtml = (ast?: Tag[], parentSelector: string = '', map: Record<string
     const className = element.attrs?.class
     const type = element.type
     const name = element.name
+    // hr这种标签不处理
+    if (name && ['hr'].includes(name)) {
+      continue
+    }
     let selector = ''
     if (className) {
       selector += `${parentSelector} > .${className}`
@@ -157,7 +161,7 @@ const handleHtml = (ast?: Tag[], parentSelector: string = '', map: Record<string
     }
     map[selector] = (map[selector] || 0) + 1
     if (className || name) {
-      selector = `${selector}:nth-child(${map[selector] || 1})`
+      selector = `${selector}:nth-of-type(${map[selector]})`
     }
     const div = document.querySelector(selector) as HTMLElement
     if (div) {
