@@ -1,9 +1,9 @@
 <template>
-  <Editor ref="editor" />
-  <button type="button" title="输出" @click="getContent">
-    输出
+  <Editor ref="editor" :style="{ height: '100px' }" />
+  <button class="button" type="button" title="输出" @click="getContent">
+    输出富文本显示
   </button>
-  <div v-html="html"></div>
+  <div v-html="html" class="html"></div>
 </template>
 
 <script setup lang="ts">
@@ -17,30 +17,22 @@ const getContent = () => {
 </script>
 
 <style scoped>
-header {
-  line-height: 1.5;
+
+.button {
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  background: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin-top: 10px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.html {
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #ccc;
+  min-height: 100px;
+  border-radius: 4px;
+  margin-top: 10px;
 }
 </style>

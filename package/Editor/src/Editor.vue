@@ -1,5 +1,5 @@
 <template>
-  <div class="editor" @click="focus">
+  <div class="editor" @click="focus" :style="style">
     <div class="editor__menu">
       <button type="button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
         @click="editor?.chain().focus().toggleBold().run()">
@@ -45,7 +45,7 @@
         :disabled="!editor?.can().chain().focus().undo().run()">
         <div class="iconfont icon-undo"></div>
       </button>
-      <button type="button" title="清除" @click="() => editor?.commands.clearContent(true)">
+      <button style="" type="button" title="清除" @click="() => editor?.commands.clearContent(true)">
         <div class="iconfont icon-empty"></div>
       </button>
     </div>
@@ -70,11 +70,12 @@ import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import HTML from 'html-parse-stringify';
 import { nextTick, ref } from 'vue';
-import styleNames from './styleNames.json';
+import styleNames from '../assets/json/styleNames.json';
+import { type EditorProps } from './props.d'
 
-// const { content } = withDefaults(defineProps<{ content: string }>(), {
-//   content: ''
-// })
+const { style, placeholder } = withDefaults(defineProps<EditorProps>(), {
+  placeholder: '请输入内容...'
+})
 
 const color = ref('#000');
 const setColor = (val: any) => {
@@ -96,7 +97,7 @@ const extensions = [
     types: ['heading', 'paragraph'],
   }),
   Placeholder.configure({
-    placeholder: '请输入内容...',
+    placeholder,
   }),
   StarterKit.configure({
     codeBlock: false,
