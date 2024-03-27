@@ -48,9 +48,6 @@
       <button type="button" title="清除" @click="() => editor?.commands.clearContent(true)">
         <div class="iconfont icon-empty"></div>
       </button>
-      <button type="button" title="输出" @click="getContent">
-        输出
-      </button>
     </div>
     <editor-content :editor="editor" class="editor__content" />
   </div>
@@ -74,6 +71,10 @@ import Placeholder from '@tiptap/extension-placeholder';
 import HTML from 'html-parse-stringify';
 import { nextTick, ref } from 'vue';
 import styleNames from './styleNames.json';
+
+// const { content } = withDefaults(defineProps<{ content: string }>(), {
+//   content: ''
+// })
 
 const color = ref('#000');
 const setColor = (val: any) => {
@@ -107,9 +108,7 @@ const extensions = [
   }),
   CharacterCount.configure({ limit })
 ];
-
-const content = ``;
-
+const content = '';
 const editor = useEditor({
   content,
   extensions,
@@ -135,7 +134,11 @@ const handleStyle = (div?: HTMLElement) => {
   }
   return newStyle
 }
-const handleHtml = (ast?: Tag[], parentSelector: string = '') => {
+
+const camelToKebabCase = (str: string) => {
+  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+}
+const handleHtml = (ast?: Tag[], parentSelector: string = '', map: Record<string, number> = {}) => {
   if (!ast?.length) {
     return
   }
@@ -143,13 +146,18 @@ const handleHtml = (ast?: Tag[], parentSelector: string = '') => {
     const element = ast[i];
     const className = element.attrs?.class
     const type = element.type
+    const name = element.name
     let selector = ''
     if (className) {
       selector += `${parentSelector} > .${className}`
-    } else if (type === 'text') {
-      selector = parentSelector
+    } else if (name) {
+      selector += `${parentSelector} > ${name}`
     } else {
-      selector += `${parentSelector} > ${type}`
+      selector = parentSelector
+    }
+    map[selector] = (map[selector] || 0) + 1
+    if (className || name) {
+      selector = `${selector}:nth-child(${map[selector] || 1})`
     }
     const div = document.querySelector(selector) as HTMLElement
     if (div) {
@@ -158,25 +166,30 @@ const handleHtml = (ast?: Tag[], parentSelector: string = '') => {
       for (const key in styleObj) {
         if (Object.prototype.hasOwnProperty.call(styleObj, key)) {
           const value = styleObj[key];
-          styleStr += `${key}: ${value};`
+          styleStr += `${camelToKebabCase(key)}: ${value};`
         }
       }
       element.attrs = { style: styleStr }
+
     }
-    handleHtml(element.children, selector)
+    handleHtml(element.children, selector, map)
   }
 }
-const getContent = () => {
-  const str = editor.value?.getHTML() || ''
-  if (str) {
-    const ast = HTML.parse(str)
+const getHTML = () => {
+  let htmlString = editor.value?.getHTML() || ''
+  if (htmlString) {
+    const ast = HTML.parse(htmlString)
     handleHtml(ast, '.editor > .editor__content > .tiptap.ProseMirror')
-    const htmlString = HTML.stringify(ast);
-    console.log(htmlString)
+    htmlString = HTML.stringify(ast);
   }
+  return htmlString
 }
 nextTick(() => {
   focus()
+})
+
+defineExpose({
+  getHTML
 })
 
 
@@ -279,7 +292,7 @@ $text: var(--editor-text);
     margin: 0 4px;
     padding: 4px;
     border-radius: 2px;
-    // background: #fff;
+    background: #fff;
   }
 
   button:hover,

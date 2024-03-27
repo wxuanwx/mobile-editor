@@ -1,10 +1,20 @@
-<script setup lang="ts">
-import Editor  from '../package/Editor/src/Editor.vue'
-</script>
-
 <template>
-  <Editor />
+  <Editor ref="editor" />
+  <button type="button" title="输出" @click="getContent">
+    输出
+  </button>
+  <div v-html="html"></div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import Editor from '../package/Editor/src/Editor.vue'
+const editor = ref()
+const html = ref('')
+const getContent = () => {
+  html.value = editor.value.getHTML()
+}
+</script>
 
 <style scoped>
 header {
