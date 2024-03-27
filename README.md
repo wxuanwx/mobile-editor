@@ -30,7 +30,7 @@ vue3移动端富文本编辑器
     <script setup lang="ts">
     import { Editor } from 'mobile-editor';
     // 引入组件样式
-    import "mobile-editor/lib/style.css";
+    import 'mobile-editor/lib/style.css';
     </script>
 
 ## 使用

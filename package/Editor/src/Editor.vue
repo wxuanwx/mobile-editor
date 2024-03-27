@@ -1,5 +1,5 @@
 <template>
-  <div class="editor" @click="focus" :style="style">
+  <div class="editor__container" @click="focus" :style="style">
     <div class="editor__menu">
       <button type="button" class="editor__menu__button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
         @click="editor?.chain().focus().toggleBold().run()">
@@ -191,6 +191,10 @@ const handleHtml = (ast?: Tag[], parentSelector: string = '', map: Record<string
   }
 }
 const getHTML = () => {
+  const content = editor.value?.getText() || ''
+  if (!content) {
+    return ''
+  }
   let htmlString = editor.value?.getHTML() || ''
   if (htmlString) {
     const ast = HTML.parse(htmlString)
@@ -282,12 +286,14 @@ $text: var(--editor-text);
 }
 
 .editor {
-  box-sizing: border-box;
-  border-radius: 4px;
-  color: #0d0d0d;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #0d0d0d;
+  &__container {
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: #0d0d0d;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #0d0d0d;
+  }
 
   &__menu {
     position: fixed;

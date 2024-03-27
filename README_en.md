@@ -29,7 +29,7 @@ app.mount('#app');
 // index.vue
 <script setup lang="ts">
 import { Editor } from 'mobile-editor';
-import "mobile-editor/lib/style.css";
+import 'mobile-editor/lib/style.css';
 </script>
 ```
 

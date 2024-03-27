@@ -1,6 +1,6 @@
 {
   "name": "mobile-editor",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "type": "module",
   "description": "vue3移动端富文本编辑器  Vue3 Mobile Rich Text Editor",
   "main": "lib/index.umd.js",
