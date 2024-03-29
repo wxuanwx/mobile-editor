@@ -1,6 +1,6 @@
 <template>
   <div class="editor__container" @click="focus" :style="style">
-    <div class="editor__menu">
+    <div class="editor__menu" :style="{fontSize: `${menuSize}px`}">
       <button type="button" class="editor__menu__button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
         @click="editor?.chain().focus().toggleBold().run()">
         <div class="iconfont icon-bold"></div>

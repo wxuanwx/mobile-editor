@@ -16,15 +16,15 @@ vue3移动端富文本编辑器
     // main.ts
     import { createApp } from 'vue';
     import App from './App.vue';
-
+    
     import Editor from 'mobile-editor';
     // 引入组件样式
     import 'mobile-editor/lib/style.css';
-
+    
     const app = createApp(App);
     app.use(Editor );
     app.mount('#app');
-
+    
     // 2. 局部
     // index.vue
     <script setup lang="ts">
@@ -37,10 +37,12 @@ vue3移动端富文本编辑器
 
 ```
 // index.vue
-// 使用组件的getHTML方法获取富文本内容
+// getHTML：获取富文本内容
+// menu-size：设置下方菜单按钮大小
+// font-size：设置字体大小
 <template>
   <div class="app-container">
-    <Editor ref="editor" :style="{ height: '100px' }" />
+    <Editor ref="editor" :style="{ height: '100px' }" :menu-size="20" :font-size="14" />
   </div>
 </template>
 <script setup lang="ts">

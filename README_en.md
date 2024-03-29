@@ -37,6 +37,8 @@ import 'mobile-editor/lib/style.css';
 
 ```
 // index.vue
+getHTML：get content
+menu-size：set the size of the menu buttons below
 <template>
   <div class="app-container">
     <Editor ref="editor" :style="{ height: '100px' }" />
