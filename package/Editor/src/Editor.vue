@@ -55,7 +55,7 @@
         <div class="iconfont icon-empty"></div>
       </button>
     </div>
-    <editor-content :editor="editor" class="editor__content" />
+    <editor-content :editor="editor" class="editor__content" :style="{ fontSize: `${fontSize}px` }" />
   </div>
 </template>
 
@@ -81,10 +81,14 @@ import styleNames from '../assets/json/styleNames.json';
 interface EditorProps {
   style?: Partial<StyleValue>
   placeholder?: string
+  menuSize?: number
+  fontSize?: number
 }
 
-const { style, placeholder } = withDefaults(defineProps<EditorProps>(), {
-  placeholder: '请输入内容...'
+const { style, placeholder, menuSize } = withDefaults(defineProps<EditorProps>(), {
+  placeholder: '请输入内容...',
+  menuSize: 14,
+  fontSize: 16
 })
 
 const color = ref('#000');
@@ -211,7 +215,7 @@ defineExpose({
   getHTML
 })
 
-
+const menuSizePx = `${menuSize}px`
 </script>
 <style lang="scss">
 @import "../assets/css/global.scss";
@@ -227,9 +231,13 @@ defineExpose({
   --editor-info: #909399;
   --editor-text: #303133;
   --editor-font-size: 14px;
+  --editor-small-menu-icon-size: v-bind(menuSizePx);
   --editor-border-radius: 4px;
 }
 
+$small-menu-icon-size: var(--editor-small-menu-icon-size);
+
+$size: var(--editor-font-size);
 $primary: var(--editor-primary);
 $success: var(--editor-success);
 $warning: var(--editor-warning);
@@ -241,7 +249,10 @@ $text: var(--editor-text);
   .editor {
     &__menu {
       justify-content: space-between;
-      ;
+
+      &__button {
+        font-size: $small-menu-icon-size;
+      }
     }
   }
 }
@@ -250,10 +261,9 @@ $text: var(--editor-text);
   .editor {
     &__menu {
       &__button {
-        font-size: 16px;
+        font-size: $small-menu-icon-size;
       }
     }
-
   }
 }
 
@@ -261,7 +271,7 @@ $text: var(--editor-text);
   .editor {
     &__menu {
       &__button {
-        font-size: 18px;
+        font-size: 20px;
       }
     }
 
@@ -275,7 +285,7 @@ $text: var(--editor-text);
   .editor {
     &__menu {
       &__button {
-        font-size: 20px;
+        font-size: 22px;
       }
     }
 
@@ -337,6 +347,5 @@ $text: var(--editor-text);
     width: 1px;
     margin: 0 4px;
   }
-
 }
 </style>
