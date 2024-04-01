@@ -1,5 +1,5 @@
 <template>
-  <Editor ref="editor" :style="{ height: '100px' }" :menu-size="40" :font-size="14" />
+  <Editor ref="editor" :style="{ height: '100px' }" :menu-size="18" :font-size="14" />
   <button class="button" type="button" title="输出" @click="getContent">
     输出富文本显示
   </button>

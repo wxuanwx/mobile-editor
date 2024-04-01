@@ -1,6 +1,20 @@
 <template>
   <div class="editor__container" @click="focus" :style="style">
-    <div class="editor__menu" :style="{fontSize: `${menuSize}px`}">
+    <div class="editor__menu"
+      :style="{ fontSize: `${menuSize}px`, height: !isOpen ? `${editorMenuHeight}px` : undefined, opacity: editorMenuHeight === 0 ? 0 : 1 }"
+      ref="editorMenuRef">
+      <button type="button" data-position="top" class="editor__menu__button"
+        :class="{ 'editor__menu__button--reversal': isOpen }" title="展开" @click="open" v-show="isMore">
+        <div class="iconfont icon-launch"></div>
+      </button>
+      <button style="" type="button" class="editor__menu__button" title="清除"
+        @click="() => editor?.commands.clearContent(true)">
+        <div class="iconfont icon-empty"></div>
+      </button>
+      <button type="button" class="editor__menu__button editor__menu__button--divider" title="撤回"
+        @click="() => editor?.chain().focus().undo().run()" :disabled="!editor?.can().chain().focus().undo().run()">
+        <div class="iconfont icon-undo"></div>
+      </button>
       <button type="button" class="editor__menu__button" :class="editor?.isActive('bold') ? 'is-active' : ''" title="加粗"
         @click="editor?.chain().focus().toggleBold().run()">
         <div class="iconfont icon-bold"></div>
@@ -45,15 +59,6 @@
         title="有序列表" @click="() => editor?.chain().focus().toggleOrderedList().run()">
         <div class="iconfont icon-orderedList"></div>
       </button>
-      <div class="editor__menu__divider"></div>
-      <button type="button" class="editor__menu__button" title="撤回" @click="() => editor?.chain().focus().undo().run()"
-        :disabled="!editor?.can().chain().focus().undo().run()">
-        <div class="iconfont icon-undo"></div>
-      </button>
-      <button style="" type="button" class="editor__menu__button" title="清除"
-        @click="() => editor?.commands.clearContent(true)">
-        <div class="iconfont icon-empty"></div>
-      </button>
     </div>
     <editor-content :editor="editor" class="editor__content" :style="{ fontSize: `${fontSize}px` }" />
   </div>
@@ -75,7 +80,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import HTML from 'html-parse-stringify';
-import { nextTick, ref, type StyleValue } from 'vue';
+import { nextTick, ref, watch, type StyleValue } from 'vue';
 import styleNames from '../assets/json/styleNames.json';
 
 interface EditorProps {
@@ -207,6 +212,42 @@ const getHTML = () => {
   }
   return htmlString
 }
+const editorMenuRef = ref<HTMLElement>()
+const editorMenuHeight = ref(0)
+const margin = 4
+const padding = 4
+const isOpen = ref(false)
+const isMore = ref(true)
+const open = () => {
+  isOpen.value = !isOpen.value
+}
+
+watch(() => editorMenuRef.value, () => {
+  if (editorMenuRef.value) {
+    setTimeout(() => {
+      const nodes = editorMenuRef.value?.querySelectorAll('button[type="button"]') as NodeListOf<HTMLElement>
+      const len = nodes.length
+      const [btn1, btn2] = [...nodes]
+      const btnWidth = btn1?.offsetWidth
+      const btnLeft1 = btn1?.offsetLeft
+      const btnLeft2 = btn2?.offsetLeft
+      const menuWidth = (editorMenuRef.value?.clientWidth)
+      editorMenuHeight.value = btn1.clientHeight + margin
+      if (btnWidth && menuWidth) {
+        // 有margin和padding
+        const contentWidth = menuWidth - padding * 2
+        const num = Math.floor(contentWidth / (btnWidth + padding * 2))
+        isMore.value = num < len
+        const marginRight = btnLeft2 - btnLeft1 - btnWidth - margin
+        for (let i = num; i < len - 1; i++) {
+          const node = nodes[i];
+          node.style.marginRight = `${marginRight}px`
+        }
+      }
+    }, 500);
+  }
+})
+
 nextTick(() => {
   focus()
 })
@@ -274,10 +315,6 @@ $text: var(--editor-text);
         font-size: 20px;
       }
     }
-
-    &__divider {
-      height: 16px !important;
-    }
   }
 }
 
@@ -287,10 +324,6 @@ $text: var(--editor-text);
       &__button {
         font-size: 22px;
       }
-    }
-
-    &__divider {
-      height: 18px !important;
     }
   }
 }
@@ -306,6 +339,7 @@ $text: var(--editor-text);
   }
 
   &__menu {
+    box-sizing: border-box;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -314,9 +348,11 @@ $text: var(--editor-text);
     display: flex;
     flex-wrap: wrap;
     padding: 4px;
+    transition: opacity,height 0.1s;
 
     &__button {
-      outline: inherit;
+      position: relative;
+      outline: none;
       accent-color: black;
       border: none;
       cursor: pointer;
@@ -324,11 +360,52 @@ $text: var(--editor-text);
       padding: 4px;
       border-radius: 2px;
       background: #fff;
+      transition: transform 0.3s;
+
+      &--reversal {
+        transform: rotate(180deg);
+      }
+
+      &--divider::after {
+        content: '';
+        position: absolute;
+        top: 26%;
+        right: -8px;
+        height: 48%;
+        width: 1px;
+        background-color: #363636;
+      }
+
+      &:last-child {
+        margin-right: auto;
+      }
+
+      // &[data-position="top"]:after {
+      //   content: '展开更多功能按钮';
+      //   position: absolute;
+      //   font-size: 12px;
+      //   color: #909399;
+      //   margin-top: -5px;
+      //   margin-left: -5px;
+      //   border-width: 5px;
+      //   border-style: solid;
+      //   border-color: #333 transparent transparent transparent;
+      //   top: -100%;
+      //   left: 50%;
+      //   border-color: transparent transparent #333;
+      //   border-top-width: 0;
+      //   border-bottom-color: #333;
+      // }
     }
 
-    &__button:hover,
+    // &__button:hover,
     &__button.is-active {
       background-color: #e0e0e0;
+    }
+
+    &__button:active {
+      background-color: transparent;
+      border-color: transparent;
     }
 
   }
@@ -339,13 +416,6 @@ $text: var(--editor-text);
     height: 200px;
     overflow-y: auto;
     padding: 12px;
-  }
-
-  &__divider {
-    background-color: #ccc;
-    height: 14px;
-    width: 1px;
-    margin: 0 4px;
   }
 }
 </style>
